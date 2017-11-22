@@ -1,6 +1,3 @@
-var no;
-var yes;
-
 var skier;
 var monster;
 var crowd = [];
