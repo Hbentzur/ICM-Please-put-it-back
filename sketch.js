@@ -2,19 +2,18 @@ var capture;
 var w = 1280,
     h = 960;
 
-var thresh = 10;
+var thresh = 20;
 
 let walker;
 
 function setup() {
+    
+    // camera
     capture = createCapture(VIDEO);
     createCanvas(w, h);
     capture.size(w, h);
     capture.hide();
   	walker = new Walker();
-    
-createSprite(400, 200, 50, 50);
-
     
     
 }
