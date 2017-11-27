@@ -1,5 +1,5 @@
 var camera;
-var thresh = 30;
+var thresh = 75;
 
 var w = 1024,
     h = 768;
@@ -51,16 +51,17 @@ function draw() {
                 }
 
 
-                if (x == floor (Noman.previousPosition.x)) {
+                // Noman walking
+                if (x == floor(Noman.position.x)) {
                     if (outputValue == 0) {
-                        fill(0, 0, 255);
-                        text("NO", 100, 100);
-                        console.log("working");
-                    }
+                        Noman.maxSpeed = 0;
+                    }else{
+                      Noman.maxSpeed = 3;   
+                    
                 }
-
-
-
+                }
+                
+                
                 pixels[i++] = outputValue; // R
                 pixels[i++] = outputValue; // G
                 pixels[i++] = outputValue; // B
@@ -82,7 +83,6 @@ function draw() {
 
     //Door
     Wayout.show();
-
 
 
 }
