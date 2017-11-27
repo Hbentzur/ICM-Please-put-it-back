@@ -21,17 +21,13 @@ function setup() {
     Noman.rotateToDirection = true;
     Noman.maxSpeed = 3;
 
-    walker = new No();
+    Wayout = new Door();
 
 }
 
 function draw() {
 
-    walker.Walk();
-
-    // No
-    var newxtwalkerX = walker.Nox + walker.Nospeed;
-    var newxtwalkerY = walker.Noy + walker.Nospeed;
+    Noman.attractionPoint(3, Wayout.Doorx, Wayout.Doory);
 
 
     //B&W
@@ -55,56 +51,53 @@ function draw() {
                 }
 
 
-            pixels[i++] = outputValue; // R
-            pixels[i++] = outputValue; // G
-            pixels[i++] = outputValue; // B
-            i++; // No alpha               
+                if (x == floor (Noman.previousPosition.x)) {
+                    if (outputValue == 0) {
+                        fill(0, 0, 255);
+                        text("NO", 100, 100);
+                        console.log("working");
+                    }
+                }
+
+
+
+                pixels[i++] = outputValue; // R
+                pixels[i++] = outputValue; // G
+                pixels[i++] = outputValue; // B
+                i++; // No alpha               
+            }
         }
+
+        var n = w * h;
+        var ratio = total / n;
     }
 
-    var n = w * h;
-    var ratio = total / n;
-}
+    camera.updatePixels();
 
-camera.updatePixels();
-
-image(camera, 0, 0, 1024, 768);
-
-// Animation
-drawSprites();
+    image(camera, 0, 0, 1024, 768);
 
 
+    // Animation
+    drawSprites();
 
+    //Door
+    Wayout.show();
 
-}
-
-
-
-class No {
-    constractor() {
-        this.Nox = 10;
-        this.Noy = 10;
-        this.Nospeed = 10;
-    }
-
-    Walk() {
-//        if (mouseIsPressed) {
-//            Noman.attractionPoint(3, mouseX, mouseY);
-//        }
-                this.Nox += this.Nospeed;
-                this.Noy += this.Nospeed;
-    }
 
 
 }
+
 
 class Door {
-    constractor() {
-        this.Doorx = (random(100, width));
-        this.Doory = (random(100, height));
+    constructor() {
+        this.Doorx = 30;
+        this.Doory = 30;
     }
 
-
-
+    show() {
+        fill(255, 0, 0);
+        textSize(30);
+        text("Door", this.Doorx, this.Doory);
+    }
 
 }
