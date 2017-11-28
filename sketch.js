@@ -1,5 +1,5 @@
 var camera;
-var thresh = 70;
+var thresh = 100;
 
 var w = 1024,
     h = 768;
@@ -8,8 +8,30 @@ var size = 50;
 
 var Noman;
 
+// Flowers x and y
+var x = 10,
+    y = 10;
+
+
+let flowerFrames = [];
+let currentFlowerFrame = 0;
+
+
 function preload() {
     myFont = loadFont('Font/BIG JOHN.otf');
+
+
+    // Flowers
+    /*Flowersanim =
+        loadAnimation("Graphic/Flower/Flowers00.png",
+            "Graphic/Flower/Flowers01.png",
+            "Graphic/Flower/Flowers02.png",
+            "Graphic/Flower/Flowers03.png",
+            "Graphic/Flower/Flowers04.png",
+            "Graphic/Flower/Flowers05.png");*/
+    flowerFrames[0] = loadImage("Graphic/Flower/Flowers00.png");
+    flowerFrames[1] = loadImage("Graphic/Flower/Flowers01.png");
+    flowerFrames[2] = loadImage("Graphic/Flower/Flowers02.png");
 
 }
 
@@ -28,71 +50,63 @@ function setup() {
     Noman.rotateToDirection = true;
     Noman.maxSpeed = 3;
 
-
     // Door
     Wayout = new wayout();
+
+    // Flowers
+    //Flowers = new flowers(x, y);
 
 }
 
 function draw() {
 
+    background(255);
+
     // Noman attraction Point
     Noman.attractionPoint(3, Wayout.Doorx, Wayout.Doory);
 
-
-    //B&W
+    // Treshold New
     camera.loadPixels();
-    if (camera.pixels.length > 0) {
-        var pixels = camera.pixels;
-        var thresholdAmount = thresh;
-        thresholdAmount /= 100.0;
-        thresholdAmount *= 255;
+    for (var y = 0; y < h; y += 10) {
+        for (var x = 0; x < w; x += 10) {
+            var off = ((y * w) + x) * 4;
+            camera.pixels[off],
+                camera.pixels[off + 1],
+                camera.pixels[off + 2];
 
-        var total = 0;
-        var i = 0;
-
-        for (var y = 0; y < h; y++) {
-            for (var x = 0; x < w; x++) {
-                var redValue = pixels[i];
-                var outputValue = 0;
-                if (redValue >= thresholdAmount) {
-                    outputValue = 255;
-                    total++;
-                }
-
-                // Noman walking on white pix
-                if (x == floor(Noman.position.x)) {
-                    if (outputValue == 0) {
-                        Noman.maxSpeed = 0;
-                    } else {
-                        Noman.maxSpeed = 3;
-
-                    }
-                }
-
-                pixels[i++] = outputValue; // R
-                pixels[i++] = outputValue; // G
-                pixels[i++] = outputValue; // B
-                i++; // No alpha               
+            // Flowers
+            if (camera.pixels[off + 1] < thresh) {
+                fill(0);
+                rect(x, y, 10, 10);
+                //image(flowerFrames[currentFlowerFrame], x, y);
+                //Flowers.show();
             }
+
+            // Noman walking on white pix
+            if ((Noman.position.x >= x) && (Noman.position.x <= x + 10)
+               && (Noman.position.y >= y) && (Noman.position.y <= y + 10)) {
+                if (camera.pixels[off + 1] < thresh) {
+                    Noman.maxSpeed = 0;
+                } else {
+                    Noman.maxSpeed = 3;
+                }
+            }
+
         }
 
-        var n = w * h;
-        var ratio = total / n;
+
     }
-
-    camera.updatePixels();
-
-    console.log(pixels);
-
-    image(camera, 0, 0, w, h);
 
     //Door
     Wayout.show();
 
+    currentFlowerFrame++;
+    if (currentFlowerFrame > flowerFrames.length - 1) {
+        currentFlowerFrame = 0;
+    }
+    
     // Animation
     drawSprites();
-
 
 }
 
@@ -112,10 +126,17 @@ class wayout {
 
 }
 
-class Flowers {
-    constructor() {
-        this.Flowerx = random(30, w);
-        this.Flowery = random(30, h);
+
+class flowers {
+    constructor(Fx, Fy) {
+        this.Flowersx = Fx;
+        this.Flowersy = Fy;
     }
 
+    show() {
+        textFont(myFont);
+        fill(0, 0, 255);
+        textSize(5);
+        text("Flowers", this.Flowersx, this.Flowersy);
+    }
 }
