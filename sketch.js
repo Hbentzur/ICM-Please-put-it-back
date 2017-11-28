@@ -1,10 +1,14 @@
 var camera;
-var thresh = 75;
+var thresh = 70;
 
 var w = 1024,
     h = 768;
 
 var Noman;
+
+function preload() {
+    myFont = loadFont('Font/BIG JOHN.otf');
+}
 
 function setup() {
 
@@ -14,14 +18,14 @@ function setup() {
     camera.size(w, h);
     camera.hide();
 
-    // No walking sequence
+    // Noman walking sequence animation
     Noman =
         createSprite(width / 2, height / 2, 60, 60);
     Noman.addAnimation("Graphic/Walk/Walk_1.png", "Graphic/Walk/Walk_2.png", "Graphic/Walk/Walk_3.png");
     Noman.rotateToDirection = true;
     Noman.maxSpeed = 3;
 
-    Wayout = new Door();
+    Wayout = new wayout();
 
 }
 
@@ -38,7 +42,7 @@ function draw() {
         thresholdAmount /= 100.0;
         thresholdAmount *= 255;
 
-        var total = 0;
+        var total = 20;
         var i = 0;
 
         for (var y = 0; y < h; y++) {
@@ -51,17 +55,17 @@ function draw() {
                 }
 
 
-                // Noman walking
+                // Noman walking on white
                 if (x == floor(Noman.position.x)) {
                     if (outputValue == 0) {
                         Noman.maxSpeed = 0;
-                    }else{
-                      Noman.maxSpeed = 3;   
-                    
+                    } else {
+                        Noman.maxSpeed = 3;
+
+                    }
                 }
-                }
-                
-                
+
+
                 pixels[i++] = outputValue; // R
                 pixels[i++] = outputValue; // G
                 pixels[i++] = outputValue; // B
@@ -75,29 +79,37 @@ function draw() {
 
     camera.updatePixels();
 
-    image(camera, 0, 0, 1024, 768);
-
-
-    // Animation
-    drawSprites();
+    image(camera, 0, 0, w, h);
 
     //Door
     Wayout.show();
+
+    // Animation
+    drawSprites();
 
 
 }
 
 
-class Door {
+class wayout {
     constructor() {
-        this.Doorx = 30;
-        this.Doory = 30;
+        this.Doorx = random(30, w);
+        this.Doory = random(30, h);
     }
 
     show() {
-        fill(255, 0, 0);
+        textFont(myFont);
+        fill(222, 198, 42);
         textSize(30);
-        text("Door", this.Doorx, this.Doory);
+        text("Exit", this.Doorx, this.Doory);
     }
 
+}
+
+class flowers {
+    constructor(Maxsize) {
+        this.Flowerx = random(30, w);
+        this.Flowery = random(30, h);
+    }
+    
 }
