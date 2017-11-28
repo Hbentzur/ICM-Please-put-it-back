@@ -1,10 +1,8 @@
 var camera;
-var thresh = 100;
+var thresh = 30;
 
 var w = 1024,
     h = 768;
-
-var size = 50;
 
 var Noman;
 
@@ -22,16 +20,29 @@ function preload() {
 
 
     // Flowers
-    /*Flowersanim =
-        loadAnimation("Graphic/Flower/Flowers00.png",
-            "Graphic/Flower/Flowers01.png",
-            "Graphic/Flower/Flowers02.png",
-            "Graphic/Flower/Flowers03.png",
-            "Graphic/Flower/Flowers04.png",
-            "Graphic/Flower/Flowers05.png");*/
     flowerFrames[0] = loadImage("Graphic/Flower/Flowers00.png");
     flowerFrames[1] = loadImage("Graphic/Flower/Flowers01.png");
     flowerFrames[2] = loadImage("Graphic/Flower/Flowers02.png");
+    flowerFrames[3] = loadImage("Graphic/Flower/Flowers03.png");
+    flowerFrames[4] = loadImage("Graphic/Flower/Flowers04.png");
+    flowerFrames[5] = loadImage("Graphic/Flower/Flowers05.png");
+    flowerFrames[6] = loadImage("Graphic/Flower/Flowers06.png");
+    flowerFrames[7] = loadImage("Graphic/Flower/Flowers07.png");
+    flowerFrames[8] = loadImage("Graphic/Flower/Flowers08.png");
+    flowerFrames[9] = loadImage("Graphic/Flower/Flowers09.png");
+    flowerFrames[10] = loadImage("Graphic/Flower/Flowers10.png");
+    flowerFrames[11] = loadImage("Graphic/Flower/Flowers11.png");
+    flowerFrames[12] = loadImage("Graphic/Flower/Flowers12.png");
+    flowerFrames[13] = loadImage("Graphic/Flower/Flowers13.png");
+    flowerFrames[14] = loadImage("Graphic/Flower/Flowers14.png");
+    flowerFrames[15] = loadImage("Graphic/Flower/Flowers15.png");
+    flowerFrames[16] = loadImage("Graphic/Flower/Flowers16.png");
+    flowerFrames[17] = loadImage("Graphic/Flower/Flowers17.png");
+    flowerFrames[18] = loadImage("Graphic/Flower/Flowers18.png");
+    flowerFrames[19] = loadImage("Graphic/Flower/Flowers19.png");
+    flowerFrames[20] = loadImage("Graphic/Flower/Flowers20.png");
+    flowerFrames[21] = loadImage("Graphic/Flower/Flowers21.png");
+    flowerFrames[22] = loadImage("Graphic/Flower/Flowers22.png");
 
 }
 
@@ -76,15 +87,13 @@ function draw() {
 
             // Flowers
             if (camera.pixels[off + 1] < thresh) {
-                fill(0);
-                rect(x, y, 10, 10);
-                //image(flowerFrames[currentFlowerFrame], x, y);
-                //Flowers.show();
+                imageMode(CENTER);
+                image(flowerFrames[currentFlowerFrame], x, y, (currentFlowerFrame * 3), (currentFlowerFrame * 3));
             }
 
             // Noman walking on white pix
-            if ((Noman.position.x >= x) && (Noman.position.x <= x + 10)
-               && (Noman.position.y >= y) && (Noman.position.y <= y + 10)) {
+            if ((Noman.position.x >= x) && (Noman.position.x <= x + 10) &&
+                (Noman.position.y >= y) && (Noman.position.y <= y + 10)) {
                 if (camera.pixels[off + 1] < thresh) {
                     Noman.maxSpeed = 0;
                 } else {
@@ -104,7 +113,7 @@ function draw() {
     if (currentFlowerFrame > flowerFrames.length - 1) {
         currentFlowerFrame = 0;
     }
-    
+
     // Animation
     drawSprites();
 
