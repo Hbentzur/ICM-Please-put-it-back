@@ -4,10 +4,13 @@ var thresh = 70;
 var w = 1024,
     h = 768;
 
+var size = 50;
+
 var Noman;
 
 function preload() {
     myFont = loadFont('Font/BIG JOHN.otf');
+
 }
 
 function setup() {
@@ -25,12 +28,15 @@ function setup() {
     Noman.rotateToDirection = true;
     Noman.maxSpeed = 3;
 
+
+    // Door
     Wayout = new wayout();
 
 }
 
 function draw() {
 
+    // Noman attraction Point
     Noman.attractionPoint(3, Wayout.Doorx, Wayout.Doory);
 
 
@@ -42,7 +48,7 @@ function draw() {
         thresholdAmount /= 100.0;
         thresholdAmount *= 255;
 
-        var total = 20;
+        var total = 0;
         var i = 0;
 
         for (var y = 0; y < h; y++) {
@@ -54,8 +60,7 @@ function draw() {
                     total++;
                 }
 
-
-                // Noman walking on white
+                // Noman walking on white pix
                 if (x == floor(Noman.position.x)) {
                     if (outputValue == 0) {
                         Noman.maxSpeed = 0;
@@ -64,7 +69,6 @@ function draw() {
 
                     }
                 }
-
 
                 pixels[i++] = outputValue; // R
                 pixels[i++] = outputValue; // G
@@ -78,6 +82,8 @@ function draw() {
     }
 
     camera.updatePixels();
+
+    console.log(pixels);
 
     image(camera, 0, 0, w, h);
 
@@ -106,10 +112,10 @@ class wayout {
 
 }
 
-class flowers {
-    constructor(Maxsize) {
+class Flowers {
+    constructor() {
         this.Flowerx = random(30, w);
         this.Flowery = random(30, h);
     }
-    
+
 }
