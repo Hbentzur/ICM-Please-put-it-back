@@ -6,14 +6,14 @@ var w = 1024,
 
 var Noman;
 
-// Flowers x and y
-var x = 10,
-    y = 10;
-
+var cellsize = 30;
 
 let flowerFrames = [];
 let currentFlowerFrame = 0;
 
+
+// New black pix
+let flowerX = [];
 
 function preload() {
     myFont = loadFont('Font/BIG JOHN.otf');
@@ -65,7 +65,8 @@ function setup() {
     Wayout = new wayout();
 
     // Flowers
-    //Flowers = new flowers(x, y);
+    Flowers = new flowers();
+
 
 }
 
@@ -78,8 +79,8 @@ function draw() {
 
     // Treshold New
     camera.loadPixels();
-    for (var y = 0; y < h; y += 10) {
-        for (var x = 0; x < w; x += 10) {
+    for (var y = 0; y < h; y += cellsize) {
+        for (var x = 0; x < w; x += cellsize) {
             var off = ((y * w) + x) * 4;
             camera.pixels[off],
                 camera.pixels[off + 1],
@@ -87,32 +88,43 @@ function draw() {
 
             // Flowers
             if (camera.pixels[off + 1] < thresh) {
-                imageMode(CENTER);
-                image(flowerFrames[currentFlowerFrame], x, y, (currentFlowerFrame * 3), (currentFlowerFrame * 3));
+                Flowers.Flowersx = x;
+                Flowers.Flowersy = y;
+                Flowers.show();
+
+                // New black pix
+                flowerX.push(x);
+
+                if (flowerX.length > 5) {
+                    flowerX.splice(5);
+                }
+
             }
 
-            // Noman walking on white pix
-            if ((Noman.position.x >= x) && (Noman.position.x <= x + 10) &&
-                (Noman.position.y >= y) && (Noman.position.y <= y + 10)) {
-                if (camera.pixels[off + 1] < thresh) {
-                    Noman.maxSpeed = 0;
-                } else {
-                    Noman.maxSpeed = 3;
-                }
-            }
 
         }
 
+        // Noman walking on white pix
+        if ((Noman.position.x >= x) && (Noman.position.x <= x + 10) &&
+            (Noman.position.y >= y) && (Noman.position.y <= y + 10)) {
+            if (camera.pixels[off + 1] < thresh) {
+                Noman.maxSpeed = 0;
+            } else {
+                Noman.maxSpeed = 3;
+            }
+        }
 
     }
+
+
 
     //Door
     Wayout.show();
 
-    currentFlowerFrame++;
-    if (currentFlowerFrame > flowerFrames.length - 1) {
-        currentFlowerFrame = 0;
-    }
+    // Flowers
+    Flowers.flowercount();
+
+    console.log(flowerX);
 
     // Animation
     drawSprites();
@@ -137,15 +149,28 @@ class wayout {
 
 
 class flowers {
-    constructor(Fx, Fy) {
-        this.Flowersx = Fx;
-        this.Flowersy = Fy;
+    constructor(Sz) {
+        this.Flowersx = this.Flowersx;
+        this.Flowersy = this.Flowersy;
+        this.Flowersize = Sz;
     }
 
     show() {
-        textFont(myFont);
-        fill(0, 0, 255);
-        textSize(5);
-        text("Flowers", this.Flowersx, this.Flowersy);
+        imageMode(CENTER);
+        image(flowerFrames[currentFlowerFrame], this.Flowersx, this.Flowersy, this.Flowersize, this.Flowersize);
+
     }
+
+    flowercount() {
+        // Flowers Arrey
+        currentFlowerFrame++;
+        if (currentFlowerFrame > flowerFrames.length - 1) {
+            currentFlowerFrame = 0;
+        }
+
+    }
+
 }
+
+
+
