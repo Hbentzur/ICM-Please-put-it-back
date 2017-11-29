@@ -15,6 +15,11 @@ let currentFlowerFrame = 0;
 // New black pix
 let flowerX = [];
 
+// 2D arrey
+let currentpic = [];
+var currentpixcolor = 0;
+
+
 function preload() {
     myFont = loadFont('Font/BIG JOHN.otf');
 
@@ -67,7 +72,12 @@ function setup() {
     // Flowers
     Flowers = new flowers();
 
-
+    for (var i = 0; i < h; i += cellsize) {
+        for (var j = 0; j < w; j += cellsize) {
+            currentpic[i] = [];
+            currentpic[i][j] = currentpixcolor;
+        }
+    }
 }
 
 function draw() {
@@ -99,21 +109,35 @@ function draw() {
                     flowerX.splice(5);
                 }
 
+
+                // 2D arrey
+                for (var i = 0; i < h; i += cellsize) {
+                    for (var j = 0; j < w; j += cellsize) {
+                        if (camera.pixels[off + 1] < thresh) {
+                            currentpixcolor = 1;
+                        } else if (camera.pixels[off + 1] > thresh) {
+                            currentpixcolor = 0;
+                        }
+                        currentpic[i] = currentpixcolor;
+                        currentpic[j] = currentpixcolor;
+                    }
+
+                }
+
+
             }
 
-
-        }
-
-        // Noman walking on white pix
-        if ((Noman.position.x >= x) && (Noman.position.x <= x + 10) &&
-            (Noman.position.y >= y) && (Noman.position.y <= y + 10)) {
-            if (camera.pixels[off + 1] < thresh) {
-                Noman.maxSpeed = 0;
-            } else {
-                Noman.maxSpeed = 3;
+            // Noman walking on white pix
+            if ((Noman.position.x >= x) && (Noman.position.x <= x + 10) &&
+                (Noman.position.y >= y) && (Noman.position.y <= y + 10)) {
+                if (camera.pixels[off + 1] < thresh) {
+                    Noman.maxSpeed = 0;
+                } else {
+                    Noman.maxSpeed = 3;
+                }
             }
-        }
 
+        }
     }
 
 
@@ -124,7 +148,7 @@ function draw() {
     // Flowers
     Flowers.flowercount();
 
-    console.log(flowerX);
+    //    console.log(currentpic.length);
 
     // Animation
     drawSprites();
@@ -171,6 +195,3 @@ class flowers {
     }
 
 }
-
-
-
